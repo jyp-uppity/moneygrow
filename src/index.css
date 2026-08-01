@@ -1,0 +1,214 @@
+:root {
+  --paper: #F2F4EC;
+  --paper-deep: #E9ECDF;
+  --ink: #16241C;
+  --body: #374A3C;
+  --muted: #647566;
+  --line: #D6D9C6;
+  --bottle: #26443A;
+  --bottle-deep: #16281F;
+  --gold: #C0923D;
+  --gold-soft: #E8D6AC;
+  --rust: #A34A34;
+  --rust-soft: #F0D9CE;
+  --card: #FBFBF6;
+  --shadow: 0 1px 2px rgba(22,36,28,0.06), 0 8px 24px rgba(22,36,28,0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--body);
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold-soft);
+  color: var(--ink);
+}
+
+h1, h2, h3, h4, h5 {
+  color: var(--ink);
+  font-weight: 700;
+  margin: 0;
+}
+
+.font-serif {
+  font-family: 'Fraunces', serif;
+}
+
+.disp {
+  font-family: 'Fraunces', serif;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+}
+
+.disp-i {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 440;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Common Layout Components */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn-primary {
+  background: var(--bottle);
+  color: var(--paper);
+  border: none;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(38, 68, 58, 0.2);
+}
+
+.btn-primary:hover {
+  background: var(--bottle-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(38, 68, 58, 0.3);
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-gold:hover {
+  background: #a97e2f;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background: var(--paper-deep);
+  border-color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.badge-gold {
+  background: var(--gold-soft);
+  color: var(--ink);
+}
+
+.badge-bottle {
+  background: var(--bottle-deep);
+  color: var(--gold-soft);
+}
+
+.badge-rust {
+  background: var(--rust-soft);
+  color: var(--rust);
+}
+
+/* Card Styling */
+.mg-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.quote-block {
+  background: var(--card);
+  border-left: 4px solid var(--gold);
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+
+.quote-block p {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Print styling for PDF export */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .mg-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}

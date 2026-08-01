@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>머니그로우 (MoneyGrow) - 밀레니얼 여성을 위한 성향기반 온라인 재무관리</title>
+  <!-- Google Fonts & Pretendard -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  
+  <!-- React & Babel & Confetti CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --paper: #F2F4EC;
+      --paper-deep: #E9ECDF;
+      --ink: #16241C;
+      --body: #374A3C;
+      --muted: #647566;
+      --line: #D6D9C6;
+      --bottle: #26443A;
+      --bottle-deep: #16281F;
+      --gold: #C0923D;
+      --gold-soft: #E8D6AC;
+      --rust: #A34A34;
+      --rust-soft: #F0D9CE;
+      --card: #FBFBF6;
+      --shadow: 0 2px 4px rgba(22,36,28,0.04), 0 10px 30px rgba(22,36,28,0.06);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--body);
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif { font-family: 'Fraunces', serif; }
+    button { cursor: pointer; font-family: inherit; transition: all 0.2s ease; }
+    input, textarea, select { font-family: inherit; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header Nav */
+    .header-nav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .brand-mark {
+      background: var(--bottle);
+      color: var(--gold-soft);
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .brand-text {
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--paper);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid var(--line);
+    }
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-tab-btn.active {
+      background: var(--bottle);
+      color: #fff;
+    }
+    .header-cta-btn {
+      background: var(--bottle-deep);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .header-cta-btn:hover {
+      background: var(--bottle);
+    }
+
+    /* Common Buttons & Badges */
+    .btn-primary {
+      background: var(--bottle);
+      color: var(--paper);
+      border: none;
+      border-radius: 30px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: var(--bottle-deep); }
+    .btn-gold {
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-gold:hover { background: #a87e30; }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .btn-outline:hover { background: var(--paper-deep); }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-gold { background: var(--gold-soft); color: var(--ink); }
+    .badge-bottle { background: var(--bottle-deep); color: var(--gold-soft); }
+    .badge-rust { background: var(--rust-soft); color: var(--rust); }
+
+    .mg-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+    .quote-block {
+      background: var(--card);
+      border-left: 4px solid var(--gold);
+      padding: 20px 24px;
+      margin: 20px 0;
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+    }
+    .quote-block p {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    /* 2x2 Matrix Grid */
+    .quad-grid-wrap {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      grid-template-rows: 1fr 30px;
+      gap: 10px;
+      margin: 24px 0;
+    }
+    .quad-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+    }
+    .quad-cell {
+      background: var(--card);
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .quad-cell.active-user-type {
+      border-color: var(--gold);
+      background: #FFFDF7;
+      box-shadow: 0 0 0 3px rgba(192, 146, 61, 0.2);
+    }
+
+    /* Footer */
+    footer.app-footer {
+      marginTop: 80px;
+      padding: 40px 0;
+      border-top: 1px solid var(--line);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .header-inner { flex-direction: column; height: auto; padding: 12px 0; gap: 12px; }
+      .nav-tabs { width: 100%; overflow-x: auto; justify-content: flex-start; }
+      .container { padding: 0 16px; }
+      .quad-grid-wrap { grid-template-columns: 1fr; }
+    }
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // ==========================================
+    // DATA CONSTANTS & QUESTIONS
+    // ==========================================
+    const QUESTIONS = [
+      { id: 1, axis: 'planning', subType: 'trait', text: '큰돈을 쓰기 전에 항상 예산을 먼저 확인하는 편이다.', isReverse: false, catLabel: '계획성 지표 · 성향 문항' },
+      { id: 2, axis: 'planning', subType: 'trait', text: '저축·투자를 시작하기 전에 목표 금액과 기간을 구체적으로 정한다.', isReverse: false, catLabel: '계획성 지표 · 성향 문항' },
+      { id: 3, axis: 'planning', subType: 'trait', text: '다음 달 지출 계획을 세우지 않아도 크게 불안하지 않다.', isReverse: true, catLabel: '계획성 지표 · 성향 문항' },
+      { id: 4, axis: 'planning', subType: 'trait', text: '매달 정해진 날짜에 저축·투자를 실행한다.', isReverse: false, catLabel: '계획성 지표 · 성향 문항' },
+      { id: 5, axis: 'planning', subType: 'action', text: '[최근 3개월] 예산 계획을 세우고 그 안에서 지출했다.', isReverse: false, catLabel: '계획성 지표 · 행동 문항' },
+      { id: 6, axis: 'planning', subType: 'action', text: '[최근 3개월] 미리 정하지 않은 50만 원 이상의 지출이 있었다.', isReverse: true, catLabel: '계획성 지표 · 행동 문항' },
+      { id: 7, axis: 'planning', subType: 'action', text: '[최근 3개월] 저축·투자 자동이체를 새로 설정하거나 유지했다.', isReverse: false, catLabel: '계획성 지표 · 행동 문항' },
+      { id: 8, axis: 'risk', subType: 'trait', text: '원금 손실 가능성이 있어도 더 높은 수익을 기대할 수 있는 쪽을 선택하는 편이다.', isReverse: false, catLabel: '위험선호 지표 · 성향 문항' },
+      { id: 9, axis: 'risk', subType: 'trait', text: '예금·적금처럼 원금이 보장되는 상품이 가장 편안하게 느껴진다.', isReverse: true, catLabel: '위험선호 지표 · 성향 문항' },
+      { id: 10, axis: 'risk', subType: 'trait', text: '투자자산 가격이 20% 하락해도 장기적으로 버틸 수 있다고 생각한다.', isReverse: false, catLabel: '위험선호 지표 · 성향 문항' },
+      { id: 11, axis: 'risk', subType: 'trait', text: '검증되지 않은 새 투자 방법보다 익숙하고 안전한 방법을 선호한다.', isReverse: true, catLabel: '위험선호 지표 · 성향 문항' },
+      { id: 12, axis: 'risk', subType: 'action', text: '[최근 1년] 주식·ETF·코인 등 원금 손실 가능 자산에 새로 투자했다.', isReverse: false, catLabel: '위험선호 지표 · 행동 문항' },
+      { id: 13, axis: 'risk', subType: 'action', text: '[최근 1년] 투자 비중보다 예금·적금 비중을 더 늘렸다.', isReverse: true, catLabel: '위험선호 지표 · 행동 문항' },
+      { id: 14, axis: 'risk', subType: 'action', text: '[최근 1년] 시장이 하락했을 때 불안해서 보유 자산을 매도한 적이 있다.', isReverse: true, catLabel: '위험선호 지표 · 행동 문항' },
+      { id: 15, axis: 'impulsivity', subType: 'trait', text: '계획에 없던 물건을 발견하면 그 자리에서 바로 구매하는 편이다.', isReverse: false, catLabel: '충동성 지표 · 성향 문항' },
+      { id: 16, axis: 'impulsivity', subType: 'trait', text: '스트레스를 받으면 소비로 푸는 편이다.', isReverse: false, catLabel: '충동성 지표 · 성향 문항' },
+      { id: 17, axis: 'impulsivity', subType: 'action', text: '[최근 3개월] "사지 말았어야 했다"고 후회한 지출이 자주 있었다.', isReverse: false, catLabel: '충동성 지표 · 행동 문항' },
+      { id: 18, axis: 'avoidance', subType: 'trait', text: '통장 잔액이나 카드값 확인이 부담스러워 미루는 편이다.', isReverse: false, catLabel: '회피성 지표 · 성향 문항' },
+      { id: 19, axis: 'avoidance', subType: 'action', text: '[현재] 연금·보험·대출 등 재무 관련 서류를 열어보지 않고 방치한 것이 있다.', isReverse: false, catLabel: '회피성 지표 · 행동 문항' },
+      { id: 20, axis: 'avoidance', subType: 'trait', text: '정산·연봉 협상처럼 돈 이야기를 꺼내야 하는 상황을 피하고 싶다.', isReverse: false, catLabel: '회피성 지표 · 성향 문항' }
+    ];
+
+    const TYPES = {
+      PA: { code: 'P · A', name: '차곡차곡형', tagline: '계획하고, 지킨다', desc: '계획 수립에 능숙하고 안정적인 지출 통제와 차곡차곡 자산을 지키는 것을 중시합니다.', strengths: ['저축 습관 안정 유지', '지출 계획 꼼꼼 실천', '충동구매가 거의 없음'], pitfalls: ['변화에 소극적이라 기회 이탈', '안전자산 과도 편중', '물가상승률 대비 자산증식 지연'], firstAction: '비상금 3~6개월 치를 확인한 뒤, 여유 자금의 일부를 정기 적립식 ETF로 자동이체 설정하세요.' },
+      PG: { code: 'P · G', name: '설계가형', tagline: '계획하고, 키운다', desc: '장기적 재무 목표를 설정하고 논리적으로 자산을 배분해 성장을 이끄는 능력이 탁월합니다.', strengths: ['목표지향 정보탐색 및 학습', '다양한 자산분산 감각', '중장기 로드맵 수립 능숙'], pitfalls: ['과도한 분석 마비로 실행 지연', '타이밍 기다리다 기회비용 발생', '계획 수정 시 유연성 부족'], firstAction: '분석을 멈추고 지금 가진 정보로 실행할 월 정액 투자금 상한선을 확정하고 자동화하세요.' },
+      SA: { code: 'S · A', name: '소확행형', tagline: '필요한 만큼, 편안하게', desc: '돈에 지나치게 연연하기보다 현재의 편안함과 삶의 안정을 중요하게 여깁니다.', strengths: ['무리한 지출/부채 없음', '재무 스트레스가 적음', '타인과의 비교에 흔들리지 않음'], pitfalls: ['명확한 목표 부재로 형성 지연', '물가상승 대비 장기책 미흡', '금융 지식 부재 오랫동안 지속'], firstAction: '복잡한 계획 대신 월급날 다음 날 자동으로 저축 계좌로 이동하는 자동화 시스템부터 구축하세요.' },
+      SG: { code: 'S · G', name: '모험가형', tagline: '기회를 보면, 움직인다', desc: '과감한 결단력과 뛰어난 트렌드 감각으로 새로운 투자 기회를 누구보다 빠르게 포착합니다.', strengths: ['빠른 실행력과 기회 포착', '변화에 대한 거부감 적음', '도전적 재무 목표 시도'], pitfalls: ['충동적 투자 및 소비 위험', '손절 매도 기준 미흡', '감정적 매매로 자산 변동성 증가'], firstAction: '투자를 시작하기 전에 원금 손실 한도와 손절 매도 기준을 먼저 작성해 안전장치를 만드세요.' }
+    };
+
+    const COACHES = [
+      { id: 'c1', name: '이지은 재무상담사', title: '국제재무설계사 (CFP)', specialty: '30대 직장인 현금흐름 최적화, 연금·절세 구조화, 비상금 자동화' },
+      { id: 'c2', name: '박서준 코치', title: '금융행동 심리 코치', specialty: '충동지출·소비 습관 개선, 성향 맞춤 저축 루틴 구축, 재무 스트레스 해소' },
+      { id: 'c3', name: '김하나 자산관리사', title: '투자·포트폴리오 코치', specialty: '안정적 적립식 ETF 포트폴리오, 내집마련 자금 3년 로드맵' }
+    ];
+
+    const ARTICLES = [
+      { id: 'a1', category: '지출관리/자동화', title: '월급 250만 원 직장인의 비상금 파킹통장 200% 활용법', readTime: '4분 읽기', summary: '생활비 계좌와 비상금 계좌를 분리하는 것만으로 매달 15만 원의 새어나가는 돈을 막는 구체적 가이드.' },
+      { id: 'a2', category: '절세/연금', title: '연금저축펀드 vs IRP: 내 성향에 맞는 절세 계좌 고르기', readTime: '6분 읽기', summary: '세액공제 혜택 최대 900만 원 한도 활용과 중도해지 위험을 최소화하는 포트폴리오 팁.' },
+      { id: 'a3', category: '적립식 투자', title: '주식 하락장에도 멘탈을 지키는 3단계 자동투자 스케줄', readTime: '5분 읽기', summary: '감정에 휩쓸리지 않고 매월 정해진 날짜에 자동이체로 자산을 키우는 설계가형 루틴.' }
+    ];
+
+    function calculateResult(answers) {
+      let scores = { pTraitRaw: 0, pActionRaw: 0, rTraitRaw: 0, rActionRaw: 0, impRaw: 0, avdRaw: 0 };
+      QUESTIONS.forEach(q => {
+        const val = answers[q.id] || 3;
+        const fVal = q.isReverse ? (6 - val) : val;
+        if (q.axis === 'planning') {
+          if (q.subType === 'trait') scores.pTraitRaw += fVal;
+          else scores.pActionRaw += fVal;
+        } else if (q.axis === 'risk') {
+          if (q.subType === 'trait') scores.rTraitRaw += fVal;
+          else scores.rActionRaw += fVal;
+        } else if (q.axis === 'impulsivity') scores.impRaw += fVal;
+        else if (q.axis === 'avoidance') scores.avdRaw += fVal;
+      });
+
+      const pTrait = Math.round(((scores.pTraitRaw - 4) / 16) * 100);
+      const pAction = Math.round(((scores.pActionRaw - 3) / 12) * 100);
+      const rTrait = Math.round(((scores.rTraitRaw - 4) / 16) * 100);
+      const rAction = Math.round(((scores.rActionRaw - 3) / 12) * 100);
+      const impulsivity = Math.round(((scores.impRaw - 3) / 12) * 100);
+      const avoidance = Math.round(((scores.avdRaw - 3) / 12) * 100);
+
+      const typeKey = `${pTrait >= 50 ? 'P' : 'S'}${rTrait >= 50 ? 'G' : 'A'}`;
+      const typeInfo = TYPES[typeKey];
+      const gap = Math.max(Math.abs(pTrait - pAction), Math.abs(rTrait - rAction));
+
+      return {
+        typeInfo,
+        typeKey,
+        scores: { pTrait, pAction, rTrait, rAction, impulsivity, avoidance },
+        gap,
+        gapText: gap >= 30 ? '크게 불일치 (경고)' : gap >= 15 ? '약간 불일치' : '상태 일치'
+      };
+    }
+
+    // ==========================================
+    // MAIN APP COMPONENT
+    // ==========================================
+    function App() {
+      const [tab, setTab] = useState('home'); // 'home', 'assess', 'report', 'booking', 'routine', 'prd'
+      const [answers, setAnswers] = useState({});
+      const [qIndex, setQIndex] = useState(0);
+      const [result, setResult] = useState(null);
+
+      // Booking State
+      const [bookingStep, setBookingStep] = useState(1);
+      const [bookingData, setBookingData] = useState({
+        q1: '월급은 일정한테 돈이 어디로 새어나가는지 모르겠고 저축과 투자 비율이 맞는지 확신이 없습니다.',
+        q2: '작년 주식 하락장 때 불안해서 손절을 고민했던 순간입니다.',
+        q3: '3년 안에 비상금 1,000만 원 확보 및 내집마련 보증금 모으기',
+        q4: '제 성향에 딱 맞는 구체적인 지출 예산 한도와 자동이체 금액을 확정하고 싶습니다.',
+        coachId: 'c1',
+        timeSlot: '2026년 8월 5일(월) 19:00'
+      });
+      const [bookingConfirmed, setBookingConfirmed] = useState(false);
+
+      // Routine State
+      const [routines, setRoutines] = useState([
+        { id: 1, category: '지출관리', day: '월요일 미션', title: '이번 주 고정비 목록 & 자동이체 점검', desc: '숨어있는 구독 서비스와 매달 정기적으로 나가는 고정비를 파악하고 정리합니다.', completed: true },
+        { id: 2, category: '자산분리', day: '수요일 미션', title: '비상금 전용 계좌 분리하기', desc: '월 생활비 3개월 치의 비상금을 파킹통장(CMA 등)으로 이체해 안전하게 분리해둡니다.', completed: true },
+        { id: 3, category: '자동화', day: '금요일 미션', title: '자동이체 날짜를 월급 다음 날로 일괄 변경', desc: '월급이 들어오자마자 저축과 투자금액이 먼저 나가도록 시스템화합니다.', completed: false },
+        { id: 4, category: '절세/연금', day: '일요일 미션', title: '연금저축/IRP 계좌 수수료 및 상품 확인', desc: '내가 가진 절세 계좌의 납입액과 운용 상품을 확인하고 수익률을 체크합니다.', completed: false }
+      ]);
+      const [routineTab, setRoutineTab] = useState('missions'); // 'missions', 'qna', 'articles'
+      const [userQuestion, setUserQuestion] = useState('');
+      const [qnaList, setQnaList] = useState([
+        { id: 1, date: '2026-07-28', q: '파킹통장 비상금을 500만 원 묶어두었는데, 일부를 CMA로 옮기는 게 이율에 더 유리한가요?', a: '네 나영님! 현재 주요 CMA 금리가 3.2% 수준이므로 기본 파킹통장보다 약 0.4%p 높습니다. 비상금 500만 원 중 300만 원을 CMA로 옮기는 것을 추천해 드립니다.', coach: '이지은 CFP' }
+      ]);
+      const [selectedArticle, setSelectedArticle] = useState(null);
+
+      // AddToAny Script Initialization
+      useEffect(() => {
+        const scriptId = 'addtoany-script';
+        if (!document.getElementById(scriptId)) {
+          const script = document.createElement('script');
+          script.id = scriptId;
+          script.src = 'https://static.addtoany.com/menu/page.js';
+          script.defer = true;
+          document.body.appendChild(script);
+        } else if (window.a2a) {
+          window.a2a.init('page');
+        }
+      }, [tab]);
+
+      // Demo Persona Loader (김나영 페르소나)
+      const startDemoPersona = () => {
+        const demoAnswers = { 1:5, 2:5, 3:1, 4:5, 5:3, 6:2, 7:2, 8:4, 9:2, 10:4, 11:3, 12:2, 13:2, 14:2, 15:4, 16:4, 17:3, 18:4, 19:4, 20:4 };
+        setAnswers(demoAnswers);
+        const res = calculateResult(demoAnswers);
+        setResult(res);
+        setTab('report');
+      };
+
+      const handleAnswer = (val) => {
+        const q = QUESTIONS[qIndex];
+        const nextAnswers = { ...answers, [q.id]: val };
+        setAnswers(nextAnswers);
+        if (qIndex < QUESTIONS.length - 1) {
+          setQIndex(qIndex + 1);
+        } else {
+          const res = calculateResult(nextAnswers);
+          setResult(res);
+          if (window.confetti) confetti({ particleCount: 80, spread: 70 });
+          setTab('report');
+        }
+      };
+
+      const completedMissionsCount = routines.filter(r => r.completed).length;
+      const progressPercent = Math.round((completedMissionsCount / routines.length) * 100);
+
+      return (
+        <div>
+          {/* HEADER NAV */}
+          <header className="header-nav no-print">
+            <div className="container header-inner">
+              <div className="brand-logo" onClick={() => setTab('home')}>
+                <div className="brand-mark">M</div>
+                <div>
+                  <div className="brand-text">머니그로우</div>
+                  <div className="brand-sub">MoneyGrow · 어피티 (UPPITY)</div>
+                </div>
+              </div>
+
+              <nav className="nav-tabs">
+                <button className={`nav-tab-btn ${tab === 'home' ? 'active' : ''}`} onClick={() => setTab('home')}>소개</button>
+                <button className={`nav-tab-btn ${tab === 'assess' || tab === 'report' ? 'active' : ''}`} onClick={() => setTab(result ? 'report' : 'assess')}>
+                  🧩 1단계: 재무진단
+                </button>
+                <button className={`nav-tab-btn ${tab === 'booking' ? 'active' : ''}`} onClick={() => setTab('booking')}>
+                  📅 2단계: 재무상담
+                </button>
+                <button className={`nav-tab-btn ${tab === 'routine' ? 'active' : ''}`} onClick={() => setTab('routine')}>
+                  ☑️ 3단계: 루틴관리
+                </button>
+
+              </nav>
+
+              <button className="header-cta-btn" onClick={() => { setQIndex(0); setTab('assess'); }}>
+                ✨ 진단 시작 39,000원
+              </button>
+            </div>
+          </header>
+
+          {/* MAIN CONTENT AREA */}
+          <main className="container" style={{ paddingTop: '32px', paddingBottom: '60px' }}>
+
+            {/* TAB 1: HOME (LANDING PAGE) */}
+            {tab === 'home' && (
+              <div>
+                {/* HERO BANNER */}
+                <div style={{ background: 'linear-gradient(135deg, var(--bottle-deep) 0%, var(--bottle) 100%)', color: '#F2F4EC', padding: '64px 44px', borderRadius: '24px', marginBottom: '40px', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ fontSize: '12px', letterSpacing: '0.15em', color: 'var(--gold-soft)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '16px' }}>
+                    PRODUCT REQUIREMENTS DOCUMENT · V1.0 MVP
+                  </div>
+                  <h1 className="font-serif" style={{ fontSize: '42px', margin: '0 0 16px', color: '#F6F7EF', lineHeight: 1.2 }}>
+                    밀레니얼 여성을 위한,<br />성향기반 온라인 재무관리 서비스
+                  </h1>
+                  <p className="font-serif" style={{ fontSize: '19px', color: 'var(--gold-soft)', fontStyle: 'italic', marginBottom: '32px' }}>
+                    "금융상품 판매 없는 100% Fee 기반 · 아는 상태에서 꾸준히 실천하는 상태로"
+                  </p>
+                  
+                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '40px' }}>
+                    <button className="btn-gold" style={{ fontSize: '16px', padding: '16px 32px' }} onClick={() => { setQIndex(0); setTab('assess'); }}>
+                      내 재무성향 진단하기 (39,000원) →
+                    </button>
+                    <button className="btn-outline" style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.4)', padding: '16px 28px' }} onClick={startDemoPersona}>
+                      🚀 34세 직장인 생애 데이터로 체험하기
+                    </button>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1px', background: 'rgba(255,255,255,0.15)', borderRadius: '14px', overflow: 'hidden' }}>
+                    <div style={{ background: 'rgba(22,40,31,0.4)', padding: '16px 20px' }}>
+                      <div style={{ fontSize: '11px', color: 'rgba(242,244,236,0.6)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>운영사</div>
+                      <div style={{ fontWeight: 700, fontSize: '15px', color: '#F6F7EF' }}>어피티 (UPPITY)</div>
+                    </div>
+                    <div style={{ background: 'rgba(22,40,31,0.4)', padding: '16px 20px' }}>
+                      <div style={{ fontSize: '11px', color: 'rgba(242,244,236,0.6)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>수익 원칙</div>
+                      <div style={{ fontWeight: 700, fontSize: '15px', color: '#F6F7EF' }}>상품 판매 수수료 0% · 100% Fee 기반</div>
+                    </div>
+                    <div style={{ background: 'rgba(22,40,31,0.4)', padding: '16px 20px' }}>
+                      <div style={{ fontSize: '11px', color: 'rgba(242,244,236,0.6)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>핵심 전환</div>
+                      <div style={{ fontWeight: 700, fontSize: '15px', color: '#F6F7EF' }}>막연한 불안 → 성향 맞춤 실행 루틴</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PRODUCT VISION */}
+                <div style={{ textAlign: 'center', margin: '60px 0' }}>
+                  <span className="badge badge-gold" style={{ marginBottom: '12px' }}>PRODUCT VISION</span>
+                  <h2 className="font-serif" style={{ fontSize: '30px', margin: '12px 0 20px' }}>
+                    정보는 넘쳐나지만, 여전히 사람들은 묻습니다.
+                  </h2>
+                  <div className="quote-block" style={{ maxWidth: '720px', margin: '0 auto 24px' }}>
+                    <p>"그래서 나는 지금 무엇부터, 어떻게 해야 하지?"</p>
+                  </div>
+                  <p style={{ color: 'var(--muted)', maxWidth: '720px', margin: '0 auto', fontSize: '15px' }}>
+                    머니그로우는 더 많은 정보를 주는 서비스가 아닙니다. 고객이 자신의 성향과 현재 상태를 이해하고, 전문가와 실행 계획을 세우고, 실제 생활에서 이를 지속하도록 돕는 <strong>행동 변화형 재무관리 서비스</strong>입니다.
+                  </p>
+                </div>
+
+                {/* BEFORE & AFTER TABLE */}
+                <div className="mg-card" style={{ marginBottom: '50px' }}>
+                  <h3 className="font-serif" style={{ fontSize: '22px', marginBottom: '20px' }}>핵심 사용자 변화 (Before & After)</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {[
+                      ['재테크 정보는 많지만 내 우선순위를 모름', '내 성향과 현재 상태에 맞는 우선순위를 명확히 지참함'],
+                      ['돈관리 실패를 의지 부족 탓으로 돌림', '자신의 성향과 환경에 맞는 지속 가능한 방법을 찾음'],
+                      ['막연하게 "돈 모아야지" 생각만 함', '기간과 금액이 명확한 재무 목표를 수립함'],
+                      ['지속력 저하로 2~3주를 넘기지 못함', '주간 실천 미션과 코치 피드백으로 실행을 유지함'],
+                      ['금융상담은 상품 영업이라 봐 의심함', '비용을 내고 100% 중립적인 조언을 제공받음']
+                    ].map((row, idx) => (
+                      <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', background: 'var(--paper)', padding: '14px 18px', borderRadius: '10px' }}>
+                        <div style={{ color: 'var(--rust)', fontSize: '14px' }}>✕ {row[0]}</div>
+                        <div style={{ color: 'var(--bottle)', fontWeight: 700, fontSize: '14px' }}>✓ {row[1]}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3-STEP SOLUTION */}
+                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                  <span className="badge badge-bottle">3-STEP SOLUTION</span>
+                  <h2 className="font-serif" style={{ fontSize: '30px', margin: '12px 0' }}>성향 진단부터 루틴 유지까지 3단계 여정</h2>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '60px' }}>
+                  <div className="mg-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <span style={{ fontSize: '12px', color: 'var(--gold)', fontWeight: 700 }}>1단계 · 자기 인식</span>
+                      <h3 style={{ fontSize: '20px', margin: '8px 0' }}>재무성향 진단검사</h3>
+                      <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '20px' }}>
+                        20개 문항을 통해 타고난 재무성향과 최근 실제 행동의 불일치를 시각화하고 강점과 위험요인을 발견합니다.
+                      </p>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'Fraunces, serif', color: 'var(--ink)', marginBottom: '14px' }}>
+                        39,000원 <span style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 400 }}>(단건 리포트)</span>
+                      </div>
+                      <button className="btn-primary" style={{ width: '100%' }} onClick={() => { setQIndex(0); setTab('assess'); }}>진단 시작하기</button>
+                    </div>
+                  </div>
+
+                  <div className="mg-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <span style={{ fontSize: '12px', color: 'var(--gold)', fontWeight: 700 }}>2단계 · 방향 설정</span>
+                      <h3 style={{ fontSize: '20px', margin: '8px 0' }}>1:1 맞춤 재무상담</h3>
+                      <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '20px' }}>
+                        진단 결과를 바탕으로 12년 차 전문가와 50분간 비대면 1:1 상담을 진행하며 성향에 맞는 1~3개 실행 목표를 확정합니다.
+                      </p>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'Fraunces, serif', color: 'var(--ink)', marginBottom: '14px' }}>
+                        119,000원 <span style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 400 }}>(50분 화상상담)</span>
+                      </div>
+                      <button className="btn-outline" style={{ width: '100%' }} onClick={() => setTab('booking')}>상담 예약하기</button>
+                    </div>
+                  </div>
+
+                  <div className="mg-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <span style={{ fontSize: '12px', color: 'var(--gold)', fontWeight: 700 }}>3단계 · 행동 지속</span>
+                      <h3 style={{ fontSize: '20px', margin: '8px 0' }}>재무루틴관리 구독</h3>
+                      <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '20px' }}>
+                        주간 실천 미션 체크리스트, 습관 트래킹, 담당 코치와의 비대면 Q&A로 상담에서 세운 계획을 생활 습관으로 정착시킵니다.
+                      </p>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'Fraunces, serif', color: 'var(--ink)', marginBottom: '14px' }}>
+                        월 29,800원 <span style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 400 }}>(정기 구독)</span>
+                      </div>
+                      <button className="btn-outline" style={{ width: '100%' }} onClick={() => setTab('routine')}>루틴관리 대시보드</button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PRICING PACKAGES */}
+                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                  <span className="badge badge-gold">PRICING PACKAGES</span>
+                  <h2 className="font-serif" style={{ fontSize: '30px', margin: '12px 0' }}>나에게 맞는 머니그로우 시작하기</h2>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '60px' }}>
+                  <div className="mg-card">
+                    <h4>머니그로우 스타트</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--muted)' }}>재무성향 진단 단품</p>
+                    <div style={{ fontSize: '28px', fontWeight: 700, fontFamily: 'Fraunces, serif', margin: '16px 0' }}>39,000원</div>
+                    <ul style={{ fontSize: '13px', paddingLeft: '18px', color: 'var(--body)', marginBottom: '24px' }}>
+                      <li>20개 문항 성향·행동 진단</li>
+                      <li>4가지 성향 유형 판정</li>
+                      <li>성향 vs 행동 Gap 불일치 리포트</li>
+                      <li>강점/주의점 및 첫 액션플랜</li>
+                    </ul>
+                    <button className="btn-outline" style={{ width: '100%' }} onClick={() => { setQIndex(0); setTab('assess'); }}>진단 신청</button>
+                  </div>
+
+                  <div className="mg-card" style={{ background: 'var(--bottle-deep)', color: '#EDEFE4', border: 'none' }}>
+                    <span className="badge badge-gold" style={{ marginBottom: '8px' }}>★ 가장 인기 있는 패키지</span>
+                    <h4 style={{ color: '#fff', fontSize: '20px' }}>머니그로우 플랜</h4>
+                    <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>재무진단 + 1:1 맞춤 재무상담 (50분)</p>
+                    <div style={{ margin: '16px 0' }}>
+                      <span style={{ fontSize: '13px', textDecoration: 'line-through', color: 'rgba(255,255,255,0.5)', marginRight: '8px' }}>158,000원</span>
+                      <span style={{ fontSize: '32px', fontWeight: 700, fontFamily: 'Fraunces, serif', color: 'var(--gold-soft)' }}>149,000원</span>
+                    </div>
+                    <ul style={{ fontSize: '13px', paddingLeft: '18px', color: 'rgba(255,255,255,0.9)', marginBottom: '24px' }}>
+                      <li>재무성향 진단 리포트 전체</li>
+                      <li>사전 주관식 2문 분석</li>
+                      <li>1:1 맞춤 화상 재무상담 (50분)</li>
+                      <li>상담 후 실행 로드맵 리포트 제공</li>
+                    </ul>
+                    <button className="btn-gold" style={{ width: '100%' }} onClick={() => setTab('booking')}>플랜 선택하기</button>
+                  </div>
+
+                  <div className="mg-card">
+                    <h4>머니그로우 그로우</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--muted)' }}>진단 + 상담 + 루틴관리 3개월 구독 패키지</p>
+                    <div style={{ margin: '16px 0' }}>
+                      <span style={{ fontSize: '13px', textDecoration: 'line-through', color: 'var(--muted)', marginRight: '8px' }}>247,400원</span>
+                      <span style={{ fontSize: '28px', fontWeight: 700, fontFamily: 'Fraunces, serif' }}>월 29,800원~</span>
+                    </div>
+                    <ul style={{ fontSize: '13px', paddingLeft: '18px', color: 'var(--body)', marginBottom: '24px' }}>
+                      <li>진단 + 1:1 상담 전체 포함</li>
+                      <li>주간 미션 체크리스트 & 습관 트래킹</li>
+                      <li>담당 코치 1:1 비대면 Q&A (주 1회)</li>
+                      <li>어피티 프리미엄 아티클 무제한</li>
+                    </ul>
+                    <button className="btn-outline" style={{ width: '100%' }} onClick={() => setTab('routine')}>루틴 체험하기</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: ASSESS (1단계 재무성향 진단 20문항) */}
+            {tab === 'assess' && (
+              <div className="mg-card" style={{ maxWidth: '720px', margin: '0 auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <button className="btn-outline" style={{ padding: '6px 14px', fontSize: '13px' }} onClick={() => { if(qIndex > 0) setQIndex(qIndex - 1); }}>
+                    ← 이전 문항
+                  </button>
+                  <span className="badge badge-bottle">문항 {qIndex + 1} / {QUESTIONS.length}</span>
+                </div>
+
+                {/* Progress Bar */}
+                <div style={{ height: '6px', background: 'var(--paper-deep)', borderRadius: '3px', marginBottom: '28px', overflow: 'hidden' }}>
+                  <div style={{ width: `${((qIndex + 1) / QUESTIONS.length) * 100}%`, height: '100%', background: 'linear-gradient(90deg, var(--bottle), var(--gold))', transition: 'width 0.3s' }}></div>
+                </div>
+
+                <div style={{ fontSize: '12px', color: 'var(--gold)', fontWeight: 700, marginBottom: '8px' }}>
+                  {QUESTIONS[qIndex].catLabel}
+                </div>
+                <h2 className="font-serif" style={{ fontSize: '24px', marginBottom: '28px', color: 'var(--ink)' }}>
+                  Q{qIndex + 1}. {QUESTIONS[qIndex].text}
+                </h2>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+                  {[
+                    { label: '전혀 그렇지 않다', score: 1 },
+                    { label: '그렇지 않다', score: 2 },
+                    { label: '보통이다', score: 3 },
+                    { label: '그렇다', score: 4 },
+                    { label: '매우 그렇다', score: 5 }
+                  ].map((opt) => (
+                    <button
+                      key={opt.score}
+                      onClick={() => handleAnswer(opt.score)}
+                      style={{
+                        padding: '16px 20px',
+                        textAlign: 'left',
+                        borderRadius: '12px',
+                        border: answers[QUESTIONS[qIndex].id] === opt.score ? '2px solid var(--bottle)' : '1px solid var(--line)',
+                        background: answers[QUESTIONS[qIndex].id] === opt.score ? 'rgba(38,68,58,0.08)' : '#fff',
+                        fontWeight: answers[QUESTIONS[qIndex].id] === opt.score ? 700 : 500,
+                        color: 'var(--ink)'
+                      }}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: REPORT (진단 결과 리포트) */}
+            {tab === 'report' && result && (
+              <div>
+                <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
+                  <button className="btn-outline" onClick={() => { setQIndex(0); setTab('assess'); }}>← 다시 진단하기</button>
+                  <div>
+                    <button className="btn-outline" style={{ marginRight: '10px' }} onClick={() => window.print()}>🖨️ PDF 인쇄</button>
+                    <button className="btn-gold" onClick={() => setTab('booking')}>2단계 상담 예약하기 →</button>
+                  </div>
+                </div>
+
+                <div className="mg-card" style={{ padding: '40px' }}>
+                  <span className="badge badge-gold" style={{ marginBottom: '12px' }}>진단 리포트</span>
+                  <h1 className="font-serif" style={{ fontSize: '34px', margin: '8px 0' }}>
+                    나의 재무성향: <span style={{ color: 'var(--bottle)' }}>{result.typeInfo.name}</span> ({result.typeInfo.code})
+                  </h1>
+                  <p className="font-serif" style={{ fontStyle: 'italic', color: 'var(--gold)', fontSize: '18px', marginBottom: '24px' }}>
+                    "{result.typeInfo.tagline}"
+                  </p>
+
+                  <p style={{ color: 'var(--body)', fontSize: '15px', lineHeight: 1.7, marginBottom: '24px' }}>
+                    {result.typeInfo.desc}
+                  </p>
+
+                  {/* 2x2 Matrix Visual */}
+                  <div style={{ background: 'var(--paper)', padding: '24px', borderRadius: '16px', margin: '28px 0' }}>
+                    <h4 className="font-serif" style={{ fontSize: '18px', marginBottom: '16px' }}>2x2 재무성향 매트릭스</h4>
+                    <div className="quad-grid-wrap">
+                      <div style={{ gridColumn: 1, gridRow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', fontSize: '11px', color: 'var(--muted)', fontWeight: 700 }}>
+                        <span>성장추구형 (G)</span>
+                        <span>안정추구형 (A)</span>
+                      </div>
+                      <div className="quad-grid" style={{ gridColumn: 2, gridRow: 1 }}>
+                        <div className={`quad-cell ${result.typeKey === 'PG' ? 'active-user-type' : ''}`}>
+                          <div style={{ fontSize: '11px', color: 'var(--gold)', fontWeight: 700 }}>P + G</div>
+                          <div style={{ fontWeight: 700, fontSize: '16px' }}>설계가형</div>
+                          {result.typeKey === 'PG' && <span className="badge badge-bottle" style={{ marginTop: '6px' }}>내 성향 ★</span>}
+                        </div>
+                        <div className={`quad-cell ${result.typeKey === 'SG' ? 'active-user-type' : ''}`}>
+                          <div style={{ fontSize: '11px', color: 'var(--gold)', fontWeight: 700 }}>S + G</div>
+                          <div style={{ fontWeight: 700, fontSize: '16px' }}>모험가형</div>
+                          {result.typeKey === 'SG' && <span className="badge badge-bottle" style={{ marginTop: '6px' }}>내 성향 ★</span>}
+                        </div>
+                        <div className={`quad-cell ${result.typeKey === 'PA' ? 'active-user-type' : ''}`}>
+                          <div style={{ fontSize: '11px', color: 'var(--gold)', fontWeight: 700 }}>P + A</div>
+                          <div style={{ fontWeight: 700, fontSize: '16px' }}>차곡차곡형</div>
+                          {result.typeKey === 'PA' && <span className="badge badge-bottle" style={{ marginTop: '6px' }}>내 성향 ★</span>}
+                        </div>
+                        <div className={`quad-cell ${result.typeKey === 'SA' ? 'active-user-type' : ''}`}>
+                          <div style={{ fontSize: '11px', color: 'var(--gold)', fontWeight: 700 }}>S + A</div>
+                          <div style={{ fontWeight: 700, fontSize: '16px' }}>소확행형</div>
+                          {result.typeKey === 'SA' && <span className="badge badge-bottle" style={{ marginTop: '6px' }}>내 성향 ★</span>}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Detailed Scores */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '28px' }}>
+                    <div style={{ background: 'var(--paper)', padding: '18px', borderRadius: '12px' }}>
+                      <div style={{ fontSize: '12px', color: 'var(--muted)' }}>계획성 성향 / 행동</div>
+                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)' }}>
+                        {result.scores.pTrait}점 <span style={{ fontSize: '13px', color: 'var(--muted)' }}>(행동 {result.scores.pAction}점)</span>
+                      </div>
+                    </div>
+                    <div style={{ background: 'var(--paper)', padding: '18px', borderRadius: '12px' }}>
+                      <div style={{ fontSize: '12px', color: 'var(--muted)' }}>위험선호 성향 / 행동</div>
+                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)' }}>
+                        {result.scores.rTrait}점 <span style={{ fontSize: '13px', color: 'var(--muted)' }}>(행동 {result.scores.rAction}점)</span>
+                      </div>
+                    </div>
+                    <div style={{ background: 'var(--paper)', padding: '18px', borderRadius: '12px' }}>
+                      <div style={{ fontSize: '12px', color: 'var(--rust)', fontWeight: 700 }}>성향-행동 Gap</div>
+                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--rust)' }}>
+                        {result.gap}점 <span style={{ fontSize: '12px' }}>({result.gapText})</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Strengths & Pitfalls */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '28px' }}>
+                    <div style={{ background: 'rgba(38,68,58,0.05)', padding: '20px', borderRadius: '12px', border: '1px solid var(--line)' }}>
+                      <h4 style={{ color: 'var(--bottle)', fontSize: '16px', marginBottom: '12px' }}>강점 Top 3</h4>
+                      <ul style={{ paddingLeft: '18px', margin: 0, fontSize: '14px' }}>
+                        {result.typeInfo.strengths.map((s, i) => <li key={i} style={{ marginBottom: '6px' }}>{s}</li>)}
+                      </ul>
+                    </div>
+                    <div style={{ background: 'rgba(163,74,52,0.05)', padding: '20px', borderRadius: '12px', border: '1px solid var(--line)' }}>
+                      <h4 style={{ color: 'var(--rust)', fontSize: '16px', marginBottom: '12px' }}>주의할 점 Top 3</h4>
+                      <ul style={{ paddingLeft: '18px', margin: 0, fontSize: '14px' }}>
+                        {result.typeInfo.pitfalls.map((p, i) => <li key={i} style={{ marginBottom: '6px' }}>{p}</li>)}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* First Action Plan */}
+                  <div className="quote-block">
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '4px' }}>
+                      첫 번째 액션 플랜
+                    </div>
+                    <p style={{ fontSize: '17px' }}>{result.typeInfo.firstAction}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: BOOKING (2단계 재무상담) */}
+            {tab === 'booking' && (
+              <div className="mg-card" style={{ maxWidth: '780px', margin: '0 auto' }}>
+                <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+                  <span className="badge badge-gold" style={{ marginBottom: '8px' }}>2단계 · 방향 설정</span>
+                  <h2 className="font-serif" style={{ fontSize: '28px', margin: '8px 0' }}>1:1 성향 맞춤 전문 재무상담</h2>
+                  <p style={{ fontSize: '14px', color: 'var(--muted)' }}>
+                    금융상품 영업 0% · 100% Fee 기반의 중립적인 50분 1:1 맞춤 화상 솔루션
+                  </p>
+                </div>
+
+                {/* Stepper Header */}
+                <div style={{ display: 'flex', borderBottom: '1px solid var(--line)', marginBottom: '32px' }}>
+                  <div 
+                    onClick={() => setBookingStep(1)}
+                    style={{ flex: 1, padding: '14px', textAlign: 'center', fontWeight: 700, fontSize: '15px', borderBottom: bookingStep === 1 ? '3px solid var(--bottle)' : 'none', color: bookingStep === 1 ? 'var(--bottle)' : 'var(--muted)', cursor: 'pointer' }}
+                  >
+                    1. 사전 고민 작성
+                  </div>
+                  <div 
+                    onClick={() => setBookingStep(2)}
+                    style={{ flex: 1, padding: '14px', textAlign: 'center', fontWeight: 700, fontSize: '15px', borderBottom: bookingStep === 2 ? '3px solid var(--bottle)' : 'none', color: bookingStep === 2 ? 'var(--bottle)' : 'var(--muted)', cursor: 'pointer' }}
+                  >
+                    2. 코치 및 일정 선택
+                  </div>
+                </div>
+
+                {/* STEP 1: PRE-QUESTIONS */}
+                {bookingStep === 1 && (
+                  <div>
+                    <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>상담 사전 문답 작성</h3>
+                    <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '24px' }}>
+                      상담사가 사전에 고객님의 현황을 정확히 파악하고 맞춤형 피드백을 준비하기 위한 4가지 주관식 질문입니다.
+                    </p>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '32px' }}>
+                      <div>
+                        <label style={{ display: 'block', fontWeight: 700, fontSize: '14px', marginBottom: '6px' }}>
+                          Q1. 지금 가장 해결하고 싶은 돈 고민은 무엇인가요?
+                        </label>
+                        <textarea 
+                          rows={3}
+                          value={bookingData.q1}
+                          onChange={(e) => setBookingData({ ...bookingData, q1: e.target.value })}
+                          style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid var(--line)', background: '#fff' }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontWeight: 700, fontSize: '14px', marginBottom: '6px' }}>
+                          Q2. 최근 1년 동안 돈 문제로 가장 불안했던 순간은 언제인가요?
+                        </label>
+                        <textarea 
+                          rows={3}
+                          value={bookingData.q2}
+                          onChange={(e) => setBookingData({ ...bookingData, q2: e.target.value })}
+                          style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid var(--line)', background: '#fff' }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontWeight: 700, fontSize: '14px', marginBottom: '6px' }}>
+                          Q3. 1~3년 안에 이루고 싶은 목표가 있나요? (예: 내집마련 보증금, 이직 자금 등)
+                        </label>
+                        <textarea 
+                          rows={3}
+                          value={bookingData.q3}
+                          onChange={(e) => setBookingData({ ...bookingData, q3: e.target.value })}
+                          style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid var(--line)', background: '#fff' }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontWeight: 700, fontSize: '14px', marginBottom: '6px' }}>
+                          Q4. 현재 잘하고 있다고 생각하는 습관과 이번 상담에서 꼭 알고 싶은 것은?
+                        </label>
+                        <textarea 
+                          rows={3}
+                          value={bookingData.q4}
+                          onChange={(e) => setBookingData({ ...bookingData, q4: e.target.value })}
+                          style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid var(--line)', background: '#fff' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ textAlign: 'right' }}>
+                      <button className="btn-primary" onClick={() => setBookingStep(2)}>
+                        코치 및 일정 선택하기 →
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* STEP 2: COACH & TIME SELECTION */}
+                {bookingStep === 2 && (
+                  <div>
+                    <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>담당 코치 선택</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '28px' }}>
+                      {COACHES.map(c => (
+                        <div 
+                          key={c.id} 
+                          onClick={() => setBookingData({ ...bookingData, coachId: c.id })}
+                          style={{
+                            padding: '18px',
+                            borderRadius: '12px',
+                            border: bookingData.coachId === c.id ? '2px solid var(--bottle)' : '1px solid var(--line)',
+                            background: bookingData.coachId === c.id ? 'rgba(38,68,58,0.05)' : '#fff',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ fontWeight: 700, fontSize: '16px', color: 'var(--ink)' }}>{c.name}</div>
+                            <span className="badge badge-gold">{c.title}</span>
+                          </div>
+                          <div style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '6px' }}>{c.specialty}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>상담 일시 선택</h3>
+                    <select 
+                      value={bookingData.timeSlot}
+                      onChange={(e) => setBookingData({ ...bookingData, timeSlot: e.target.value })}
+                      style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid var(--line)', background: '#fff', marginBottom: '28px' }}
+                    >
+                      <option>2026년 8월 5일(월) 19:00</option>
+                      <option>2026년 8월 5일(월) 20:00</option>
+                      <option>2026년 8월 6일(화) 19:30</option>
+                      <option>2026년 8월 7일(수) 21:00</option>
+                    </select>
+
+                    <button 
+                      className="btn-gold" 
+                      style={{ width: '100%', justifyContent: 'center', padding: '16px' }}
+                      onClick={() => setBookingConfirmed(true)}
+                    >
+                      119,000원 결제 및 예약 확정
+                    </button>
+
+                    {bookingConfirmed && (
+                      <div style={{ marginTop: '24px', background: 'rgba(38,68,58,0.1)', padding: '20px', borderRadius: '12px', color: 'var(--bottle)' }}>
+                        <div style={{ fontWeight: 700, fontSize: '16px', marginBottom: '6px' }}>✓ 1:1 상담 예약 및 결제가 성공적으로 완료되었습니다!</div>
+                        <div style={{ fontSize: '14px' }}>예약 일시: {bookingData.timeSlot}</div>
+                        <div style={{ fontSize: '14px', marginTop: '4px' }}>
+                          발급된 Zoom 화상 미팅 링크: <a href="#" onClick={(e) => e.preventDefault()} style={{ textDecoration: 'underline', fontWeight: 700 }}>https://us06web.zoom.us/j/89230198421</a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 5: ROUTINE (3단계 루틴관리 대시보드) */}
+            {tab === 'routine' && (
+              <div>
+                {/* DASHBOARD HEADER CARD */}
+                <div style={{ background: 'var(--bottle-deep)', color: '#EDEFE4', padding: '36px', borderRadius: '20px', marginBottom: '32px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+                    <div>
+                      <span className="badge badge-gold" style={{ marginBottom: '10px' }}>3단계 · 행동 지속 | 월 29,800원 구독 이용 중</span>
+                      <h1 className="font-serif" style={{ fontSize: '32px', margin: '6px 0 8px', color: '#F6F7EF' }}>
+                        김나영님의 재무루틴 관리실
+                      </h1>
+                      <div style={{ fontSize: '14px', color: 'rgba(237,239,228,0.75)' }}>
+                        담당 코치: 이지은 CFP · 목표: 비상금 1,000만 원 및 지출 자동화 시스템
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '14px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.08)', padding: '16px 20px', borderRadius: '14px', textAlign: 'center', minWidth: '130px' }}>
+                        <div style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(237,239,228,0.6)' }}>연속 실천 (STREAK)</div>
+                        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--gold-soft)', fontFamily: 'Fraunces, serif' }}>🔥 16일째</div>
+                      </div>
+                      <div style={{ background: 'rgba(255,255,255,0.08)', padding: '16px 20px', borderRadius: '14px', textAlign: 'center', minWidth: '130px' }}>
+                        <div style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(237,239,228,0.6)' }}>주간 미션 달성률</div>
+                        <div style={{ fontSize: '24px', fontWeight: 700, color: '#fff', fontFamily: 'Fraunces, serif' }}>{progressPercent}%</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div style={{ height: '8px', background: 'rgba(255,255,255,0.15)', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ width: `${progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, var(--gold-soft), var(--gold))', transition: 'width 0.3s' }}></div>
+                  </div>
+                </div>
+
+                {/* SUB TABS */}
+                <div style={{ display: 'flex', gap: '12px', borderBottom: '1px solid var(--line)', paddingBottom: '12px', marginBottom: '28px' }}>
+                  <button 
+                    className={`btn-outline ${routineTab === 'missions' ? 'btn-primary' : ''}`}
+                    onClick={() => setRoutineTab('missions')}
+                  >
+                    📝 주간 실천 미션 ({completedMissionsCount}/{routines.length})
+                  </button>
+                  <button 
+                    className={`btn-outline ${routineTab === 'qna' ? 'btn-primary' : ''}`}
+                    onClick={() => setRoutineTab('qna')}
+                  >
+                    💬 코치 1:1 Q&A ({qnaList.length})
+                  </button>
+                  <button 
+                    className={`btn-outline ${routineTab === 'articles' ? 'btn-primary' : ''}`}
+                    onClick={() => setRoutineTab('articles')}
+                  >
+                    📖 어피티 픽 프리미엄 아티클
+                  </button>
+                </div>
+
+                {/* SUB TAB 1: MISSIONS */}
+                {routineTab === 'missions' && (
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <h2 className="font-serif" style={{ fontSize: '22px' }}>이번 주 맞춤 실천 미션</h2>
+                      <span style={{ fontSize: '13px', color: 'var(--muted)' }}>클릭하여 완료 상태를 변경하세요</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                      {routines.map(r => (
+                        <div 
+                          key={r.id} 
+                          className="mg-card" 
+                          style={{
+                            padding: '20px 24px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            borderLeft: r.completed ? '5px solid var(--bottle)' : '1px solid var(--line)',
+                            background: r.completed ? 'rgba(38,68,58,0.02)' : '#fff'
+                          }}
+                        >
+                          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                            <input 
+                              type="checkbox" 
+                              checked={r.completed} 
+                              onChange={() => setRoutines(routines.map(item => item.id === r.id ? { ...item, completed: !item.completed } : item))}
+                              style={{ width: '20px', height: '20px', marginTop: '4px', cursor: 'pointer' }}
+                            />
+                            <div>
+                              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                                <span className="badge badge-gold">{r.category}</span>
+                                <span style={{ fontSize: '12px', color: 'var(--muted)' }}>{r.day}</span>
+                              </div>
+                              <div style={{ fontWeight: 700, fontSize: '17px', color: 'var(--ink)', textDecoration: r.completed ? 'line-through' : 'none' }}>
+                                {r.title}
+                              </div>
+                              <div style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px' }}>{r.desc}</div>
+                            </div>
+                          </div>
+
+                          <button 
+                            className={r.completed ? 'btn-primary' : 'btn-outline'}
+                            style={{ padding: '8px 18px', fontSize: '13px', whiteSpace: 'nowrap' }}
+                            onClick={() => setRoutines(routines.map(item => item.id === r.id ? { ...item, completed: !item.completed } : item))}
+                          >
+                            {r.completed ? '✓ 수행 완료' : '진행 중'}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* SUB TAB 2: COACH Q&A */}
+                {routineTab === 'qna' && (
+                  <div>
+                    <div className="mg-card" style={{ marginBottom: '28px' }}>
+                      <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>담당 코치(이지은 CFP)에게 질문하기</h3>
+                      <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '16px' }}>
+                        주 1회 질문이 가능하며, 48시간 이내에 1:1 모의 피드백 답변이 도착합니다.
+                      </p>
+                      <textarea 
+                        rows={3} 
+                        placeholder="이번 주 미션을 수행하면서 어려웠던 점이나 금융 질문을 남겨주세요."
+                        value={userQuestion}
+                        onChange={(e) => setUserQuestion(e.target.value)}
+                        style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid var(--line)', marginBottom: '14px' }}
+                      />
+                      <button 
+                        className="btn-primary"
+                        onClick={() => {
+                          if (!userQuestion.trim()) return;
+                          setQnaList([...qnaList, {
+                            id: Date.now(),
+                            date: new Date().toISOString().split('T')[0],
+                            q: userQuestion,
+                            a: '답변을 작성하고 있습니다. 약 24~48시간 이내 피드백이 업데이트됩니다.',
+                            coach: '이지은 CFP'
+                          }]);
+                          setUserQuestion('');
+                        }}
+                      >
+                        질문 제출하기
+                      </button>
+                    </div>
+
+                    <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Q&A 답변 내역</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {qnaList.map(item => (
+                        <div key={item.id} className="mg-card">
+                          <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '6px' }}>질문일: {item.date}</div>
+                          <div style={{ fontWeight: 700, fontSize: '16px', color: 'var(--ink)', marginBottom: '12px' }}>Q. {item.q}</div>
+                          <div style={{ background: 'var(--paper)', padding: '16px', borderRadius: '10px', borderLeft: '3px solid var(--bottle)' }}>
+                            <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--bottle)', marginBottom: '4px' }}>💬 {item.coach} 답변</div>
+                            <div style={{ fontSize: '14px', color: 'var(--body)' }}>{item.a}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* SUB TAB 3: ARTICLES */}
+                {routineTab === 'articles' && (
+                  <div>
+                    <h2 className="font-serif" style={{ fontSize: '22px', marginBottom: '20px' }}>어피티 픽 프리미엄 아티클</h2>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+                      {ARTICLES.map(art => (
+                        <div key={art.id} className="mg-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                              <span className="badge badge-gold">{art.category}</span>
+                              <span style={{ fontSize: '12px', color: 'var(--muted)' }}>{art.readTime}</span>
+                            </div>
+                            <h3 style={{ fontSize: '18px', margin: '8px 0', color: 'var(--ink)' }}>{art.title}</h3>
+                            <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '20px' }}>{art.summary}</p>
+                          </div>
+                          <button className="btn-outline" onClick={() => setSelectedArticle(art)}>아티클 읽기 →</button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Article Modal */}
+                    {selectedArticle && (
+                      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+                        <div className="mg-card" style={{ maxWidth: '600px', width: '100%', maxHeight: '80vh', overflowY: 'auto' }}>
+                          <span className="badge badge-gold" style={{ marginBottom: '8px' }}>{selectedArticle.category}</span>
+                          <h2 className="font-serif" style={{ fontSize: '24px', margin: '8px 0 16px' }}>{selectedArticle.title}</h2>
+                          <p style={{ fontSize: '14px', lineHeight: 1.8, color: 'var(--body)' }}>
+                            {selectedArticle.summary} 통장 분리는 자산관리의 첫걸음입니다. 월급이 들어오는 즉시 소비 통장과 비상금 통장으로 구분해 이체하면 무의식적인 소비를 최소화할 수 있습니다.
+                          </p>
+                          <button className="btn-primary" style={{ marginTop: '24px', width: '100%' }} onClick={() => setSelectedArticle(null)}>닫기</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+
+          </main>
+
+          {/* FOOTER */}
+          <footer className="app-footer no-print">
+            <div className="container footer-inner">
+              <div>
+                <div style={{ fontWeight: 700, color: 'var(--bottle)', fontSize: '18px' }}>머니그로우 (MoneyGrow)</div>
+                <div style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px' }}>밀레니얼 여성을 위한 성향 기반 온라인 재무관리 서비스 · 운영사: 어피티</div>
+                <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '6px' }}>© 2026 UPPITY MoneyGrow. All rights reserved.</div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+                <span style={{ fontWeight: 600, fontSize: '13px', color: 'var(--ink)' }}>페이지 공유하기</span>
+                <div className="a2a_kit a2a_kit_size_32 a2a_default_style">
+                  <a className="a2a_dd" href="https://www.addtoany.com/share"></a>
+                  <a className="a2a_button_telegram"></a>
+                  <a className="a2a_button_linkedin"></a>
+                  <a className="a2a_button_x"></a>
+                  <a className="a2a_button_kakao"></a>
+                  <a className="a2a_button_copy_link"></a>
+                  <a className="a2a_button_threads"></a>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+  <script defer src="https://static.addtoany.com/menu/page.js"></script>
+</body>
+</html>
