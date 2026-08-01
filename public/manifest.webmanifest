@@ -1,0 +1,13 @@
+{
+  "name": "머니그로우 (MoneyGrow)",
+  "short_name": "머니그로우",
+  "description": "3040 직장인을 위한 성향 기반 온라인 재무관리 서비스",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2F4EC",
+  "theme_color": "#26443A",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "400x400", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.png", "sizes": "400x400", "type": "image/png", "purpose": "maskable" }
+  ]
+}
