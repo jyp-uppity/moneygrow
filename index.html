@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W4P2NCQQX5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W4P2NCQQX5', { send_page_view: false });
+  </script>
+
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -499,6 +508,25 @@
         { id: 1, date: '2026-07-28', q: '파킹통장 비상금을 500만 원 묶어두었는데, 일부를 CMA로 옮기는 게 이율에 더 유리한가요?', a: '네 나영님! 현재 주요 CMA 금리가 3.2% 수준이므로 기본 파킹통장보다 약 0.4%p 높습니다. 비상금 500만 원 중 300만 원을 CMA로 옮기는 것을 추천해 드립니다.', coach: '이지은 CFP' }
       ]);
       const [selectedArticle, setSelectedArticle] = useState(null);
+
+      // GA4 Virtual Pageview Tracking (SPA는 URL이 바뀌지 않으므로 탭 전환마다 수동 발송)
+      useEffect(() => {
+        const TAB_PAGES = {
+          home: { page_path: '/', page_title: '머니그로우 - 소개' },
+          assess: { page_path: '/assess', page_title: '머니그로우 - 재무성향 진단' },
+          report: { page_path: '/report', page_title: '머니그로우 - 진단 리포트' },
+          booking: { page_path: '/booking', page_title: '머니그로우 - 상담 예약' },
+          routine: { page_path: '/routine', page_title: '머니그로우 - 루틴관리' }
+        };
+        const page = TAB_PAGES[tab];
+        if (page && typeof window.gtag === 'function') {
+          window.gtag('event', 'page_view', {
+            page_path: page.page_path,
+            page_title: page.page_title,
+            page_location: window.location.origin + page.page_path
+          });
+        }
+      }, [tab]);
 
       // AddToAny Script Initialization
       useEffect(() => {
