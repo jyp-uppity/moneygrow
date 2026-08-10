@@ -1554,8 +1554,8 @@
             <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 20 }} onClick={closeAuth}>
               <div className="mg-card" style={{ maxWidth: 400, width: '100%' }} onClick={e => e.stopPropagation()}>
                 <nav className="nav-tabs" style={{ marginBottom: 24 }}>
-                  <button className={`nav-tab-btn ${authMode === 'login' ? 'active' : ''}`} style={{ flex: 1 }} onClick={() => openAuth('login')}>로그인</button>
-                  <button className={`nav-tab-btn ${authMode === 'signup' ? 'active' : ''}`} style={{ flex: 1 }} onClick={() => openAuth('signup')}>회원가입</button>
+                  <button className={`nav-tab-btn ${authMode === 'login' ? 'active' : ''}`} style={{ flex: 1, justifyContent: 'center' }} onClick={() => openAuth('login')}>로그인</button>
+                  <button className={`nav-tab-btn ${authMode === 'signup' ? 'active' : ''}`} style={{ flex: 1, justifyContent: 'center' }} onClick={() => openAuth('signup')}>회원가입</button>
                 </nav>
 
                 {authMode === 'login' ? (
@@ -1570,7 +1570,6 @@
                     </div>
                     {authError && <div style={{ fontSize: 13, color: 'var(--rust)', marginBottom: 14 }}>{authError}</div>}
                     <button className="btn-primary" type="submit" style={{ width: '100%' }}>로그인</button>
-                    <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 16, textAlign: 'center' }}>테스트 관리자 계정: admin@moneygrow.app / admin1234</div>
                   </form>
                 ) : (
                   <form onSubmit={handleSignup}>
